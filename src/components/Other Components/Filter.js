@@ -85,7 +85,7 @@ class Filter extends Component {
 	}
 
 	getFullLocInfos() {
-		Geocode.setApiKey("ENTER_API_KEY");
+		Geocode.setApiKey("ENTER_GOOGLE_API_KEY");
 		Geocode.setLanguage("fr");
 		Geocode.fromAddress(this.state.wanted_location)
 			.then( response => {
