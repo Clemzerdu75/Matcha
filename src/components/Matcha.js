@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import{  CSSTransition, TransitionGroup } from 'react-transition-group';
+import axios from 'axios';
+
 import Contact from './Main_Pages/Contact';
 import Header from './Pieces_of_Pages/Header';
 import History from './Main_Pages/History';
@@ -11,29 +13,27 @@ import LikesReceived from './Main_Pages/LikesReceived';
 import NavBar from './Pieces_of_Pages/NavBar';
 import Search from './Main_Pages/Search';
 import Suggestions from './Main_Pages/Suggestions';
-import Popularity from './Main_Pages/Popularity';
 import Login from './Pieces_of_Pages/Login';
-import{  CSSTransition, TransitionGroup } from 'react-transition-group'
 import Register from './Main_Pages/Register'
 import socketContext from '../socketContext'
 import Confirm from './Pieces_of_Pages/Confirm'
 import EmptyPage from './Main_Pages/EmptyPage'
 import PwdReset from './Pieces_of_Pages/PwdReset';
-import axios from 'axios';
+
 
 
 class Matcha extends Component {
 	constructor() {
 		super();
 		this.state = {
-			isLoading: true,
-			isLogged: window.localStorage.pseudo ? true : false,
-			location: {
+			isLoading: true, // handle loading
+			isLogged: window.localStorage.pseudo ? true : false, // handle loging
+			location: { // handle if you want to be located or not
         		activate: false,
       		},
-     		newNotif: 0,
-			expand: false,
-			isCompleted: false
+     		newNotif: 0, // Handle notification
+			expand: false, // Handle the state of the navbar
+			isCompleted: false // Handle the state of your personnal profil (if you provide all the needed infos)
 		}
 		this.delog = this.delog.bind(this)
 		this.navbarExpand = this.navbarExpand.bind(this)
@@ -41,7 +41,7 @@ class Matcha extends Component {
 		this.isCompleted = this.isCompleted.bind(this);
 	}
 
-	delog() {
+	delog() { // handle logOut
 		window.localStorage.clear();
 		this.setState({
 			isLogged: false,
@@ -49,7 +49,7 @@ class Matcha extends Component {
 		window.location.reload()
 	}
 
-	login = (dataFromChild) => {
+	login = (dataFromChild) => { // handle logIn
 		if(dataFromChild) {
 			const pseudo = window.localStorage.pseudo
 			const request = `http://localhost:8080/user/${pseudo}`
@@ -68,7 +68,7 @@ class Matcha extends Component {
 		}
 	}
 
-	navbarExpand() {
+	navbarExpand() { //handle the state of the navbar (for mobile version)
 		this.setState(prevState => {
 			return {
 				expand: !prevState.expand
@@ -76,13 +76,13 @@ class Matcha extends Component {
 		})
 	}
 
-  resetNewNotif = () => {
+  resetNewNotif = () => { // Reset the notification state
     this.setState({
       newNotif:0
     });
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => { // Will see if you're connected + will handle the needed actions to make. 
     if(window.localStorage.token && window.localStorage.pseudo)
     {
       axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.token}`
@@ -111,18 +111,20 @@ class Matcha extends Component {
     }
   }
 
-  isCompleted(bool) {
+  isCompleted(bool) { // Handle isCompleted state
 	  this.setState({
 		  isCompleted: bool,
 	  })
   }
 
 	render() {
-    if (this.state.isLogged && this.state.isCompleted) {
+    if (this.state.isLogged && this.state.isCompleted) { // You're logged and you're profil is completed
 		  return (
 		  	<Router>
 		  		<Route render={ ({location}) =>  (
 		  			<div>
+
+						{/* Static component: Header + Navbar */}
 						<Header
 							triggerParentUpdate={this.delog}
 							HandleNavbar={this.navbarExpand}
@@ -130,6 +132,8 @@ class Matcha extends Component {
 							newNotif = {this.state.newNotif}
 							resetNewNotif = {this.resetNewNotif}/>
 		  				<NavBar expand={this.state.expand} HandleNavbar={this.navbarExpand}/>
+
+						{/* All Main pages of the website */}
 		  				<TransitionGroup>
 		  					<CSSTransition
 		  						key= {location.key}
@@ -142,7 +146,6 @@ class Matcha extends Component {
 		  							<Route path="/LikesSend" component={LikesSend} />
 		  							<Route path="/LikesReceived" component={LikesReceived} />
 		  							<Route path="/Infos" render={(props) => <Infos {...props} logOut={this.delog} isCompleted={this.isCompleted} />} />
-		  							<Route path="/Popularity" component={Popularity} />
 		  							<Route path="/History" component={History} />
 		  							<Route path="/Contact" component={Contact} />
 									<Route path="/ResetPassword" component={PwdReset}/>
@@ -153,11 +156,13 @@ class Matcha extends Component {
 		  	</Router>
 
 		  )
-		} else if (this.state.isLogged && !this.state.isCompleted && !this.state.isLoading) {
+		} else if (this.state.isLogged && !this.state.isCompleted && !this.state.isLoading) { // You're logged but you didn't provide all the needed infos.
 			return (
 				<Router>
 					<Route render={ ({location}) =>  (
 						<div>
+
+						{/* Static component: Header + Navbar */}
 						<Header
 							triggerParentUpdate={this.delog}
 							HandleNavbar={this.navbarExpand}
@@ -165,6 +170,8 @@ class Matcha extends Component {
 							newNotif = {this.state.newNotif}
 							resetNewNotif = {this.resetNewNotif}/>
 							<NavBar expand={this.state.expand} HandleNavbar={this.navbarExpand}/>
+
+							{/* All Main pages of the website */}
 							<TransitionGroup>
 								<CSSTransition
 									key= {location.key}
@@ -186,13 +193,17 @@ class Matcha extends Component {
 						</div>)} />
 				</Router>)
 
-		} else {
+		} else { // You're not logged
 			return (
 					<Router>
+
+						{/* Landing page background */}
 						<Landing />
 						<div className="landing_title" >
 							<h3 style={{fontSize: "15vw", textAlign:"center", marginTop: "10%", color: "#FF1744", fontWeight: "900", opacity: ".8" }}>MATCHA</h3>
 							<div style={{width: "100%", height: "10%"}}></div>
+
+							{/* Athentification Components (for logIn and register + reset Password and confirm your email adress) */}
 							<Login callbackFromParent={this.login}/>
 							<Register />
               				<Route path="/ValidateAccount" component={Confirm}/>

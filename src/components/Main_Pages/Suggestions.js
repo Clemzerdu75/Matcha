@@ -12,16 +12,16 @@ class Suggestions extends Component {
    constructor() {
         super()
         this.state = {
-			pseudo: window.localStorage.pseudo,
-            loading: false,
-			user: [],
-			logged_user: {},
-			order: "auto",
-			showOrder: false,
-			showFilter: false,
-			filter: { female: true, male: true},
-			isMobile: window.innerWidth <= 640 ? true : false,
-			blocked: []
+			pseudo: window.localStorage.pseudo, // Store the logged user pseudo
+            loading: false, // Handles the loading state
+			user: [], // Will get all the user list
+			logged_user: {}, // Will get all the logged user infos
+			order: "auto", // Handles the order of the user profils
+			showOrder: false, // Handles the order state
+			showFilter: false, // Handles the filter state
+			filter: { female: true, male: true}, // Handles if user wants to see female and/or male (dispite of orientation)
+			isMobile: window.innerWidth <= 640 ? true : false, // handles mobile version
+			blocked: [] // List of blocked users
 		}
 		this.handleOrder = this.handleOrder.bind(this)
 		this.handleFilter = this.handleFilter.bind(this)
@@ -31,7 +31,7 @@ class Suggestions extends Component {
 		window.addEventListener("resize", this.update)
     }
     
-    componentDidMount() {
+    componentDidMount() { // Gets all the logged user infos + the list of all user + the list of blocked user
 		this._isMounted = true;
 		this.setState({loading: true})
 		axios.get(`http://localhost:8080/user/${this.state.pseudo}`)
@@ -69,11 +69,11 @@ class Suggestions extends Component {
 			})
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount() { // Prevents some bugs
 		this._isMounted = false;
 	  }
 
-	update = () => {
+	update = () => { // Switch to mobile / desktop version
 		if(this._isMounted)
 			this.setState({isMobile: window.innerWidth <= 640 ? true : false})
 	}
@@ -94,7 +94,7 @@ class Suggestions extends Component {
 		})
 	}
 
-	Rerender() {
+	Rerender() {  // handles rerender if the logged user blocks someone
 		axios.get(`http://localhost:8080/relation/block/userblock/${this.state.pseudo}`)
 			.then(response => response.data)
             .then(data => {
@@ -137,7 +137,11 @@ class Suggestions extends Component {
 		const UserProfil = libraries.map(item => <Profil key={item.pseudo} item={item} Rerender={this.Rerender} />)
 		return (
 			<div className="body">
+
+				{/* Title */}
 				<h1>{text}</h1>
+
+				{/* Filter */}
 				<h3 style={{textAlign: "left", marginLeft: "10%", marginTop: "100px", zIndex: "50"}} onClick={this.showFilter}>Filter</h3>
 				<div  className="suggestion_field" style={{height: height, width: width, paddingTop: "60px", opacity: this.state.showFilter ? "1" : "0", marginTop: "10px" }}> 
 					{this.state.showFilter ? <div><Filter
@@ -147,6 +151,8 @@ class Suggestions extends Component {
 					isMobile={this.state.isMobile}
 					location={user_loc}/> <Order onOrder={this.handleOrder} isMobile={this.state.isMobile}/> </div> : null }
 				</div>
+
+				{/* User List */}
 				<Container className="table" >  
 					<Row className="justify-content-md-center" >
 						{UserProfil}

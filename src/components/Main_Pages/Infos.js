@@ -7,9 +7,11 @@ import Map from "./../Other Components/Map"
 import SimpleCard from './../Other Components/SimpleCard'
 import PictureInfos from './../Other Components/Picture_infos'
 import TableTags from '../Other Components/Tags_table'
+
 import tags from './../../img/tag_data'
 import Blank from'./../../img/logo/upload_blank.jpg'
 import Glass from './../../img/logo/loupe.png'
+
 import { checkNames, checkMail, checkPseudo, checkDate } from "../../lib";
 
 
@@ -18,21 +20,21 @@ class Infos extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isLoading: false,
-			user: { pseudo: "",
+			isLoading: false, // handle loading state
+			user: { pseudo: "", // Store the user basic infos
 					name: "",
 					lastname: "",
 					email: "",
 					description: "",
 					birthday: "2015-01-01",
 				},
-			profil: false,
-			tags: [],
-			apply: 3,
-			isMobile: window.innerWidth <= 640 ? true : false,
-			error: "",
-			completed: 0,
-			wanted_location: ""
+			profil: false, // Handle if you want to see your profil
+			tags: [], // Stores the tags list choose by user
+			apply: 3, // Handles the display of feedback
+			isMobile: window.innerWidth <= 640 ? true : false, // Handles mobile version
+			error: "", // Handles error state
+			completed: 0, // Checks if profil is completed
+			wanted_location: "" // Store the wanted location of the user
 		}
 		this.onSubmit = this.onSubmit.bind(this)
 		this.onChange = this.onChange.bind(this)
@@ -48,18 +50,18 @@ class Infos extends Component {
 	}
 
 
-	resetPassword = () =>{
+	resetPassword = () =>{ // Handles the password reset
 		axios.put('http://localhost:8080/resetPassword', {email: this.state.user.email})
 	}
 
 
-	componentDidMount() {
+	componentDidMount() { // Gets all the user infos + add additional variables for modification 
 		this._isMounted = true;
 		const pseudo = window.localStorage.pseudo
 		const request = `http://localhost:8080/user/${pseudo}`
 
 		this.setState({ loading: true })
-		axios.get(request)
+		axios.get(request) // Gets all user infos
 			.then(response => response.data)
             .then(data => {
 							data.birthday = data.birthday === " " ? this.state.user.birthday : data.birthday
@@ -68,10 +70,9 @@ class Infos extends Component {
 					user: data,
 				})
 			})
-			.then( () => {
+			.then( () => { // Add new variable
 				let tag_list = this.state.user.tags
-				console.log(this.state.user.birthday)
-				this.setState(prevState => ({
+				this.setState(prevState => ({ 
 					tags: tag_list,
 					user: {
 						...prevState.user,
@@ -86,21 +87,20 @@ class Infos extends Component {
 						wanted_location: "",
 					},
 				}))
-				console.log(this.state.user.birthday)
 			})
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount() { // Prevents for some bugs
 		this._isMounted = false;
 	}
 	
 
-	update = () => {
+	update = () => { // Handles the switch to mobile version
 		if(this._isMounted)
 			this.setState({isMobile: window.innerWidth <= 640 ? true : false})
 	}
 
-	onSubmit() {
+	onSubmit() { // Checks if data provide are valid and send it to server.
 		const user = this.state.user;
 		const header = '"Access-Control-Allow-Origin": "*"'
 		if(user.birthday.length > 0 ) {
@@ -148,7 +148,7 @@ class Infos extends Component {
 		}
 	}
 
-	onChange(e) {
+	onChange(e) { // Handles the new data to the state
 		const {name, value} = e.target
 		if(name === "wanted_location") {
 			this.setState({
@@ -165,11 +165,11 @@ class Infos extends Component {
 		
 	}
 	
-	showProfil() {
+	showProfil() { // Handles the profil state
 		this.setState((prevState) => { return {profil: !prevState.profil} })
 	}
 
-	handleTags(tags_list, tagsModif) {
+	handleTags(tags_list, tagsModif) { // Handles the tags list wanted by user, if he wants to delete or add some
 		let	Nnew = this.state.user.tagsModification.newTags
 		let Ndelete = this.state.user.tagsModification.deleteTags
 
@@ -188,8 +188,8 @@ class Infos extends Component {
 			}
 		}))
 	}
-
-	updateGalleryState(newGallery) {
+ 
+	updateGalleryState(newGallery) { // Handles the pictures gallery
 		this.setState((prevState) => ({
 			user: {
 				...prevState.user,
@@ -198,7 +198,7 @@ class Infos extends Component {
 		}))
 	}
 
-	handleDeletedPic(s_url) {
+	handleDeletedPic(s_url) { // Handles if the user wants to delete some pictures
 		let deleted_url = []
 		if (this.state.deletedPic) {
 			let deleted_url =  this.state.deletedPic
@@ -225,7 +225,7 @@ class Infos extends Component {
 		
 	}
 
-	getFullLocInfos() {
+	getFullLocInfos() { // Gets latitude and longitude for a wanted place
 		Geocode.setApiKey("ENTER_GOOGLE_API_KEY");
 		Geocode.setLanguage("fr");
 		Geocode.fromAddress(this.state.wanted_location)
@@ -246,7 +246,7 @@ class Infos extends Component {
 			})
 }
 
-	feedbackOff() { this.setState({ apply: 3, error: ""}) }
+	feedbackOff() { this.setState({ apply: 3, error: ""}) } // Toggles off feedbacks
 
 	render() {
 		let ProfilP = ""
@@ -265,12 +265,14 @@ class Infos extends Component {
 				date = filtered.join('-')
 			}
 		}
+		// if the user has some picture,handles the display of them
 		if(this.state.user.gallery && this.state.user.gallery.length) {
 		 	ProfilP = this.state.user.gallery[0].length ? this.state.user.gallery[0] : this.state.user.gallery[1]
 		} else {
 			ProfilP = Blank;
 		}
 
+		// Handles the feedback text
 		if (this.state.apply === 2)
 			feedback = "Username or email already taken 👎"
 		if (this.state.apply === 1)
@@ -282,6 +284,8 @@ class Infos extends Component {
 			<div className="body" style={{overflowX: "hidden" }}>
 				{ this.state.profil ?
 					<div>
+
+						{/* Personnal profil as the other user will see it */}
 						<div className="clickable_area"  onClick={this.showProfil}></div>
 						<SimpleCard
 							name={this.state.user.name}
@@ -298,6 +302,8 @@ class Infos extends Component {
 				: null }
 				{this.state.apply !==  3 ? 
 					<div>
+
+						{/* Feedback */}
 						<div className="clickable_area"  onClick={this.feedbackOff}></div>
 						<div className="card" style={{backgroundColor: this.state.apply !== 1 ? "#c4001d" : "#45bf37", padding: "50px 50px"}} onClick={this.feedbackOff}><h2 style={{color:this.state.apply !== 1 ? "black" : "white"}}>{feedback}</h2></div>
 					</div> : null }
@@ -306,12 +312,14 @@ class Infos extends Component {
 						<div className="clickable_area" onClick={this.feedbackOff}></div>
 						<div className="card" style={{backgroundColor:"#c4001d", color: "black", padding: "50px 50px"}} onClick={this.feedbackOff}><h2>{this.state.error}</h2></div> 
 					</div> : null }
+
+				{/* Title */}
 				<h1>{text}</h1>
 					<h2 style={{fontSize: "2em", color: "#FF1744"}}>Warning ! In this page you need to save your changes!</h2>
 					<div className="infos_fields">
 						<div className="infos_row">
 
-							{/* - First Row - */}
+							{/* - First Row: Basic Infos - */}
 							<div className="filter_col" >
 							<h3>Pseudo</h3>
 							<input
@@ -344,7 +352,7 @@ class Infos extends Component {
 								<br/>
 							</div>
 
-							{/* - Second Row - */}
+							{/* - Second Row: Pictures gallery - */}
 							<PictureInfos 
 								ProfilPicture={ ProfilP }
 								gallery={ this.state.user.gallery }
@@ -360,7 +368,7 @@ class Infos extends Component {
 							<div className="infos_fields" style={{marginBottom: "175px"}}>
 								<div className="infos_row" style={{width: "100%"}}>
 								
-								{/* - Third Row - */}
+								{/* - Third Row: Description / Orientation / Birthdate - */}
 								<div className="filter_col" style={{marginTop: this.state.isMobile ? "0" : "-400px"}}>
 									<h3>Description</h3>
 									<textarea
@@ -388,6 +396,7 @@ class Infos extends Component {
                     					name="birthday"
                     					placeholder="dd-mm-yyyy"/>
 
+									{/* Localisation */}
 									<div className="localisation_row">
 										<div style={{width: "80%"}}>
 											<h3 style={{fontSize: "1em", marginBottom: "10px"}}>Localisation</h3>
@@ -409,7 +418,7 @@ class Infos extends Component {
 									<Map user_location={user_loc}/>
 								</div>
 
-					{/* --- Fourth Row --- */}
+					{/* --- Fourth Row: Tags --- */}
 					<div className="filter_col" style={{ padding: "10px 10px", backgroundColor: "white", borderRadius: "10px", height: "auto", boxShadow: "0px 3px 8px rgb(0,0,0, .1)", marginTop: this.state.isMobile ? null : "-250px"}}>
 						<h3>Tags</h3>
 						<TableTags tags={tags} user_tags={this.state.tags} Submit={this.handleTags} />
@@ -420,7 +429,7 @@ class Infos extends Component {
 				</div>
 
 
-					{/* --- Bottom Line --- */}
+					{/* --- Bottom Line: Usefull buttons --- */}
 					<div className="Modification_button">
 						<button style={{backgroundColor: "#4fb827", color: "white", fontWeight: "bold", padding: "20px 10px"}} onClick={this.onSubmit}>Save</button>
 						<div style={{display: "inline-block" ,width: "20px"}}></div>

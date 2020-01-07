@@ -1,24 +1,27 @@
 import React, {Component} from "react";
-import Profil from '../Other Components/Profil';
+import axios from 'axios';
 import { Container, Row} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
+
+import Profil from '../Other Components/Profil';
+
 import {CheckifBlocked} from './../../lib'
-import axios from 'axios';
+
 
 class LikesReceived extends Component {
 	constructor() {
 		 super()
 		 this.state = {
-			 pseudo: window.localStorage.pseudo,
-			 loading: false,
-			 user: [],
-			 error: false,
-			 blocked: []
+			 pseudo: window.localStorage.pseudo, // Gets the pseudo of logged user
+			 loading: false, // Handles loading
+			 user: [], // Will store the logged user infos
+			 error: false,  // Handles errors
+			 blocked: [] // Handles the list of blocked users
 		 }
 		 this.Rerender = this.Rerender.bind(this)
 	 }
 	 
-	 componentDidMount() {
+	 componentDidMount() { // Gets the list of usr who like the logged user + the list of blocked user
 		 const request = `http://localhost:8080/relation/like/likeuser/${this.state.pseudo}`
 		 this.setState({loading: true})
 		 axios.get(request)
@@ -54,7 +57,7 @@ class LikesReceived extends Component {
 			})
 	 }
 
-	 Rerender() {
+	 Rerender() { // Will handle the refresh if the looged user block someone
 		axios.get(`http://localhost:8080/relation/block/userblock/${this.state.pseudo}`)
 			.then(response => response.data)
             .then(data => {
@@ -77,14 +80,18 @@ class LikesReceived extends Component {
 	 
 	 render() {
 
-		let libraries = CheckifBlocked(this.state.user, this.state.blocked)
+		let libraries = CheckifBlocked(this.state.user, this.state.blocked) // sort the list of user to show
 		 const text = this.state.loading ? "loading..." : "Likes Received"
 		 const UserProfil = libraries.map(item => <Profil key={item.pseudo} item={item}  Rerender={this.Rerender}/>)
 		 return (
 			 <div className="body">
+
+				 { /* Title */}
 				 <h1>{text}</h1>
 				 {this.state.error ?
 				 <h3 style={{marginTop: "100px", textAlign: "center", color: "#8E8E8E"}}>No user likes you</h3> :
+
+				 /* List of users */
 				 <Container className="table" >  
 					 <Row className="justify-content-md-center" >
 						 {UserProfil}

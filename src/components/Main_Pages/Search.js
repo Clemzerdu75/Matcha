@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
-import Profil from '../Other Components/Profil';
+import axios from 'axios';
 import { Container, Row} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
+
+import Profil from '../Other Components/Profil';
 import Filter from '../Other Components/Filter';
 import Order from './../Other Components/Order'
-import { globalSort } from './../../lib';
-import axios from 'axios';
 
+import { globalSort } from './../../lib';
 
 class Search extends Component {
 	_isMounted = false;
 	constructor() {
         super()
         this.state = {
-			pseudo: window.localStorage.pseudo,
-			logged_user: {},
-			loading: false,
-			search: "",
-			user: [],
-			showFilter: false,
-			order: "auto",
-			filter: { female: true, male: true},
-			isMobile: window.innerWidth <= 640 ? true : false,
-			blocked: []
+			pseudo: window.localStorage.pseudo, // Gets the logged user pseudo
+			logged_user: {}, // Will get all logged user infos
+			loading: false, // Handles loading
+			search: "", // Handles the search field
+			user: [], // Will get the user list
+			showFilter: false, // Handles the filter state
+			order: "auto", // Handles the order of the user profils
+			filter: { female: true, male: true}, // Handles if user wants to see female and/or male (dispite of orientation)
+			isMobile: window.innerWidth <= 640 ? true : false, // handles mobile version
+			blocked: [] // List of blocked users
         }
 		this.handleChange = this.handleChange.bind(this)
 		this.showFilter = this.showFilter.bind(this)
@@ -32,7 +33,7 @@ class Search extends Component {
 		window.addEventListener("resize", this.update)
     }
 
-    componentDidMount() {
+    componentDidMount() { // Gets all the logged user infos + the list of all user + the list of blocked user
 		this._isMounted = true;
 		this.setState({loading: true})
 		axios.get(`http://localhost:8080/user/${this.state.pseudo}`)
@@ -70,23 +71,23 @@ class Search extends Component {
 			})
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount() { // Prevents some bugs
 		this._isMounted = false;
 	  }
 
-	update = () => {
+	update = () => { // Switch to mobile / desktop version
 		if(this._isMounted)
 			this.setState({isMobile: window.innerWidth <= 640 ? true : false})
 	}
 
-    handleChange(event) {
+    handleChange(event) { // Handle the search field text
         const {name, value} = event.target
         this.setState({
            [name]: value
 		})
 	}
 	
-	showFilter() {
+	showFilter() { // Handles the state of the filter component
 		this.setState(prevState => {
 			return {
 				showFilter: !prevState.showFilter
@@ -94,13 +95,13 @@ class Search extends Component {
 		})	
 	}
 
-	Rerender() {
+	Rerender() { // handles rerender
 		this.setState({ state: this.state });
 	}
 
-	handleFilter(filter_object) { this.setState({filter: filter_object}) }
+	handleFilter(filter_object) { this.setState({filter: filter_object}) } // Stores the filter wanted
 
-	handleOrder(order_type) { this.setState({ order: order_type }) }
+	handleOrder(order_type) { this.setState({ order: order_type }) } // Handles the order wanted
 
 	render() {
 		let user_loc = { lat: parseFloat(this.state.logged_user.lat), lng: parseFloat(this.state.logged_user.lon) }
@@ -116,6 +117,8 @@ class Search extends Component {
 			height = "870px";
 		else
 			height= "60px";
+
+		// Handles search field to show result in real time
 		if (searchString.length > 0) {
 			libraries = libraries.filter(function(i) {
 				if(!searchString.includes("\\") && !searchString.includes("*") && !searchString.includes("(") && !searchString.includes(")")
@@ -130,7 +133,11 @@ class Search extends Component {
 		}
 		return (
 			<div className="body">
+
+				{/* Title */}
 				<h1>{text}</h1>
+
+				{/* Search + Filter input */}
 				<div className="search_field" style={{height: height}}>
 					<input className="search_input"
 						style={{width:this.state.filter && !this.state.isMobile ? "45%" : "100%", borderRadius: "5px"}}
@@ -154,10 +161,14 @@ class Search extends Component {
 						</div> : null}
 				</div> 
 				<div className="filter" style={{marginTop: 0}} >
+
+					{/* Show - Don't show filter */}
 					<h3 onClick={this.showFilter}  style={{textAlign: "left", marginLeft: "10%"}}>{this.state.showFilter? "Less" : "More"}</h3>
 				</div>
 		
 				{searchString.length > 0 ? 
+
+				/* List of profil */
 					<Container className="table" >  
 						<Row className="justify-content-md-center" >
 							{UserProfil}

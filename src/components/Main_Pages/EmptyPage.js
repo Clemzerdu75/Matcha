@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const EmptyPage = () => {
+const EmptyPage = () => { // This page will be displayed if your profil is incomplet        
 	return (
 	<div className="body">
         <div style={{width: "100%", height:"10%"}}></div>

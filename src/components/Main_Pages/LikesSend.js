@@ -1,9 +1,11 @@
 import React, {Component} from "react";
-import Profil from '../Other Components/Profil';
 import { Container, Row} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import {CheckifBlocked} from './../../lib';
 import axios from 'axios';
+
+import Profil from '../Other Components/Profil';
+
+import {CheckifBlocked} from './../../lib';
 
 class LikesSend extends Component {
 	constructor() {

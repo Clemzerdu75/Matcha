@@ -1,24 +1,26 @@
 import React, {Component} from "react";
-import Profil from '../Other Components/Profil';
 import { Container, Row} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import {CheckifBlocked} from './../../lib';
 import axios from 'axios';
+
+import Profil from '../Other Components/Profil';
+
+import {CheckifBlocked} from './../../lib';
 
 class Contact extends Component {
 	constructor() {
 		 super()
 		 this.state = {
-			 pseudo: window.localStorage.pseudo,
-			 loading: false,
-			 user: [],
-			 error: false,
-			 blocked: [],
+			 pseudo: window.localStorage.pseudo, // Get the user pseudo form local storage
+			 loading: false, // Handle loading state
+			 user: [], // will get the list of user that  match the logged user
+			 error: false, // handle error state
+			 blocked: [], // handle if some user are blocked to not show them
 		 }
 		 this.Rerender = this.Rerender.bind(this)
 	 }
 	 
-	 componentDidMount() {
+	 componentDidMount() { // Will get all the user who match the logged user and the list of user blocked and who block the logged user to sort the list
 		 const request = `http://localhost:8080/relation/match/${this.state.pseudo}`
 		 this.setState({loading: true})
 		 axios.get(request)
@@ -54,7 +56,7 @@ class Contact extends Component {
 			})
 	}
 	
-	Rerender() {
+	Rerender() { // Will handle the refresh if you block someone
 		axios.get(`http://localhost:8080/relation/block/userblock/${this.state.pseudo}`)
 			.then(response => response.data)
             .then(data => {
@@ -81,8 +83,14 @@ class Contact extends Component {
 		 const UserProfil =libraries.map(item => <Profil key={item.pseudo} item={item}  Rerender={this.Rerender}/>)
 		 return (
 			 <div className="body">
+
+				 {/* Title */}
 				 <h1>{text}</h1>
+
+				 {/* If the list if empty or there is an error */ }
 				 {this.state.error ? <h3 style={{marginTop: "100px", textAlign: "center", color: "#8E8E8E"}}>You don't have any contact to discuss with yet</h3> : null}
+
+				 {/* Display the list of user you match */}
 				 <Container className="table" >  
 					 <Row className="justify-content-md-center" >
 						 {UserProfil}

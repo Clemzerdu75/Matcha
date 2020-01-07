@@ -14,8 +14,8 @@ class Register extends Component {
 	constructor() {
 		super()
 		this.state= {
-			Expand: false,
-			fieldValue: {
+			Expand: false, // Handles the component state
+			fieldValue: { // Stor all the data share by the user
 				lastname: "",
 				name: "",
 				pseudo: "",
@@ -29,9 +29,9 @@ class Register extends Component {
 				},
 				sexOrientation: "bisexual"
 			},
-			step : 1,
-			errors: "",
-			error: false
+			step : 1, // Handles the step of registration
+			errors: "", // Handles error text
+			error: false // Handles error state
 		}
 		this.expand = this.expand.bind(this)
 		this.nextStep = this.nextStep.bind(this)
@@ -40,19 +40,19 @@ class Register extends Component {
 		this.handleError = this.handleError.bind(this)
 	}
 
-	expand() {
+	expand() { // Handles the state of the component
 		this.setState(prevState => { return { Expand: !prevState.Expand } })
 	}
 
-	nextStep(infos) {
-		if(infos && infos !== "finished") {
+	nextStep(infos) {  // Data management during all regitration.
+		if(infos && infos !== "finished") { // Store the data provide by users and change the step of registration
 			this.setState({
 				step : this.state.step + 1,
 				fieldValue: infos ? Object.assign(this.state.fieldValue, infos) : this.state.fieldValue,
 				error: false
 			  })
 		}
-		else  {
+		else  { // Resets all infos for new registration
 			this.setState ({
 				Expand: false,
 				fieldValue: {
@@ -78,12 +78,11 @@ class Register extends Component {
 	}
 
 
-	previousStep() {
+	previousStep() { // For going back 
 		this.setState({ step : this.state.step - 1, error: false })
 	}
 	
-	submitRegistration() {
-		console.log("a")
+	submitRegistration() { // Handles the data sending to the server
 		const infos = 	{	
 							name: this.state.fieldValue.name,
 							lastname: this.state.fieldValue.lastname,
@@ -95,10 +94,8 @@ class Register extends Component {
 							sexOrientation: this.state.fieldValue.sexOrientation,
 							gender: this.state.fieldValue.gender
 			}
-		console.log(infos)
 		axios.post(`http://localhost:8080/newUser`, infos )
 			.then((result) => {
-				console.log(result);
 				this.setState({ step: result.data  === 'success' ? 6 : 8 })
 			})
 			.catch(error => { this.setState({ step: 8 }) })
@@ -106,7 +103,7 @@ class Register extends Component {
 
 	handleError() { this.setState({ error: true }) }
 
-	showStep() {
+	showStep() { // Handle witch component to show during registration
 		switch (this.state.step) {
 		  case 1:
 			return <Welcome nextStep={this.nextStep} />
@@ -138,7 +135,7 @@ class Register extends Component {
 	render() {
 		const Expand = this.state.Expand
 		if(this.state.Expand) {
-			return (
+			return ( // Register Card
 				<div>
 					<div  style={{ position: "fixed", width: "100%", height: "100%", top: 0, backgroundColor: "rgb(0,0,0, 0.5"}} onClick={this.expand}></div>
 					<CSSTransition
@@ -151,7 +148,7 @@ class Register extends Component {
 				</div>
 			)
 		} else {
-			return (
+			return ( // Register button 
 				<div style={{position: "absolute", color: "white", zIndex: "20", right: "20%"}}>
 					<h3  style={{color: "white", fontSize: "2em"}} onClick={this.expand}>Register</h3>
 				</div>
