@@ -14,12 +14,15 @@ I did the front (UI/UX) of the project and Benjamin the back (using Neo4j)
 ## What is Matcha ?
 
 ## How to use it ?
-First launch Neo4j: Neo4j start (_if you haven't installed it run:_ '' _before_)
+First launch Neo4j: `neo4j start` (_if you haven't installed it run:_ `don't know yet` _before_)
 
-_If you haven't install npm run:_ ''
-And in the main directory and the api folder run:
-- npm i
-- npm start
+_If you haven't install npm run:_ `don't know yet`
+
+Finally in the main directory and the api folder run:
+ ```
+ npm i
+ npm start
+ ```
 
 And you're good to go ;)
 
