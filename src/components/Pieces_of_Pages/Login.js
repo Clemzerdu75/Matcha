@@ -3,7 +3,7 @@ import axios from 'axios'
 import { CSSTransition } from 'react-transition-group'
 import Arrow from './../../img/logo/arrow.png'
 
-class Login extends Component {
+class Login extends Component { // Login Card + reset password 
 	constructor(props) {
     super(props)
 		this.state = {

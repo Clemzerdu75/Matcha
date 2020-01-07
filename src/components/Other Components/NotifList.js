@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Transition } from 'react-transition-group'
 import NotifButton  from './NotifButton'
 
-class NotifList extends Component {
+class NotifList extends Component { // List of notification
   constructor(props) {
 		super(props)
 		this.state = {

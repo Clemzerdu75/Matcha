@@ -3,22 +3,23 @@ import { Transition } from 'react-transition-group'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-class Dashboard extends Component {
+class Dashboard extends Component { /* Last section of the notifcation: shows the picture profil, 
+    the numbers (and the list) of the user who have seen his profil + link to information page*/
     constructor() {
         super()
         this.state = {
-            pseudo: window.localStorage.pseudo,
+            pseudo: window.localStorage.pseudo,  // Gets the current user pseudo
             user: {
-                gallery: []
+                gallery: [] // Pictures Gallery
             },
-            loading: false,
-            list: false,
-            userView: [],
+            loading: false, // Handles Loading
+            list: false, // To show the list of users who have seen the current user profil
+            userView: [], // List of users who have seen the current user profil
         }
         this.showList = this.showList.bind(this)
     }
 
-    componentDidMount() {
+    componentDidMount() { // Gets the current user infos + the views
         this.setState({loading: true})
 		axios.get(`http://localhost:8080/user/${this.state.pseudo}`)
 			.then(response => response.data)
@@ -38,14 +39,14 @@ class Dashboard extends Component {
         })
     }
 
-    showList() {
+    showList() { // Handle the display of the list of users who have seen the current user profil
         this.setState((prevState) => { return {list: !prevState.list} })
     }
 
     render() {
         let UserView = this.state.userView ? this.state.userView.map((element, i) => {
             if(element.pseudo !== this.state.pseudo) {
-                return(
+                return( // Dashboard infos
                     <div key={i} className="P_row" style={{marginTop: "20px"}}>
                         <img style={{height: "75px", width: "75px", borderRadius: "5px"}} alt="" src={element.picture}></img>
                         <div style={{marginLeft: "10px"}}>
@@ -63,7 +64,7 @@ class Dashboard extends Component {
         const UserCount = UserView ? UserView.length : 0
         return (
             <div>
-                {this.state.list ?
+                {this.state.list ? // User List
                 <div>
                     <div className="clickable_area"  onClick={this.showList}></div>
                     <div className="card" style={{padding: "10px 10px", paddingTop: 0, maxHeight: "400px", overflowX: "scroll"}}>
@@ -71,7 +72,7 @@ class Dashboard extends Component {
                     </div>
                 </div> : null }
                 <Transition timeout={200} in={true} appear>
-			    {(status) => (
+			    {(status) => ( // Dashboard infos
                     <div className={`dashboard dashboard-${status}`}>
                         <h3 style={{fontWeight: "900", marginTop: "5px",textAlign: "left" }}>Dashboard</h3>
                         <h4 style={{fontSize: "2em",  marginTop: "15px", marginBottom: "10px"}}>{this.state.user.pseudo}</h4>

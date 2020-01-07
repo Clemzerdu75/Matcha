@@ -7,7 +7,7 @@ import Geocode from "react-geocode";
 class Filter extends Component {
 	constructor(props) {
 		super(props);
-		this.state= {
+		this.state= { // Store all data you can change with filter
 			male: false,
 			female: false,
 			pop_min: "1",
@@ -31,7 +31,7 @@ class Filter extends Component {
 		this.deleteTags = this.deleteTags.bind(this)
 	}
 
-	parseInfos(e) {
+	parseInfos(e) { // Checks if the data entered are valid
 		return new Promise((resolve, reject) =>{
 			const {name, value, type, checked} = e.target
 			if(name === "pop_min" || name === "pop_max")  {
@@ -64,7 +64,7 @@ class Filter extends Component {
 		});
 	}
 
-	onChange(e) {
+	onChange(e) { // When the filters are changed 
 		if(e)
 			this.parseInfos(e)
 				.then(() => this.props.onFilter(this.state))
@@ -73,7 +73,7 @@ class Filter extends Component {
 			this.props.onFilter(this.state)
 	}	
 	
-	componentDidMount() {
+	componentDidMount() { // Decides witch gender to show with the orientation and gender of the current user
 		if(this.props.orientation === "bisexual")
 			this.setState({female: true, male: true})
 		if((this.props.orientation === "heterosexual" && this.props.gender === "male") 
@@ -84,7 +84,7 @@ class Filter extends Component {
 			this.setState({female: false, male: true})
 	}
 
-	getFullLocInfos() {
+	getFullLocInfos() { // Handles Localisation
 		Geocode.setApiKey("ENTER_GOOGLE_API_KEY");
 		Geocode.setLanguage("fr");
 		Geocode.fromAddress(this.state.wanted_location)
@@ -101,7 +101,7 @@ class Filter extends Component {
 			})
 	}
 
-	saveTags(e) {
+	saveTags(e) { // Handles tags choice
 		if (e.key === 'Enter') {
 			let	tags = this.state.tags_list
 			tags.push(this.state.wanted_tag)
@@ -113,7 +113,7 @@ class Filter extends Component {
 		}	
 	}
 
-	deleteTags() {
+	deleteTags() { 
 		this.setState({
 			tags_list: [],
 		})

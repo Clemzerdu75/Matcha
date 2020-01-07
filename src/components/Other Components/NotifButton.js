@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 
-class Notification extends Component {
+class Notification extends Component { // Button to show if new notification + the number
 	constructor(props) {
 		super(props)
 		this.state ={

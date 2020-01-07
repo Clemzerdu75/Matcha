@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Tag = (props) => {
+const Tag = (props) => { // Handle the display of each tags of  the tag list in infos
 	var colors = ''
 	if (props.item.type === "hobby")
 		colors = "#ffdc91"

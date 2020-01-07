@@ -4,18 +4,18 @@ import Plane from './../../img/logo/plane.png'
 import {animateScroll} from 'react-scroll';
 import socketContext from '../../socketContext'
 
-class MessageArea extends Component {
+class MessageArea extends Component { // Message list + New message
 	constructor(props) {
 		super(props)
 		this.state = {
-      pseudo: window.localStorage.pseudo,
-      newMessage: "",
-      currentConversation: this.props.currentConversation,
+      pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+      newMessage: "", // Stores the new message
+      currentConversation: this.props.currentConversation, // Store the conversation between the 2 users
     }
     this.addMessage = this.addMessage.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount() { // Goes to the end of the conversation + Update
     this.scrollToBottom();
     this.props.socket.on('receivemesEvent', (value, from) => {
       if(value.sender === this.props.contact.pseudo) {
@@ -24,11 +24,11 @@ class MessageArea extends Component {
   });
 }
 
-  componentDidUpdate() {
+  componentDidUpdate() { // Goes to the end of the conversation when new message
     this.scrollToBottom();
   }
 
-  checkMessage (message) {
+  checkMessage (message) { 
     return (message.search(';\\%$') !== -1 || message.search('/&^') !== -1) ? 0 : 1;
   }
 
@@ -43,7 +43,7 @@ class MessageArea extends Component {
     this.setState({newMessage: e.target.value})
   }
 
-  addMessage = () => {
+  addMessage = () => { // Send new message to server
     if (/;\\%\$/.test(this.state.newMessage) || /\/&\^/.test(this.state.newMessage)) {
       this.setState({
         newMessage: ""

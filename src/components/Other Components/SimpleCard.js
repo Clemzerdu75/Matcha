@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Tag from './Tag'
 
-class SimpleCard extends Component {
+class SimpleCard extends Component { // Profil Card for preview
+	// same then Card but whitout Popularity, Like and block report
 	constructor(props) {
 		super(props)
 		this.state ={

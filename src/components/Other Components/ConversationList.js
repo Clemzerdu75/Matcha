@@ -3,11 +3,11 @@ import ConversationButton from './ConversationButton';
 import { Container } from 'reactstrap'
 
 
-class ConversationList extends Component {
+class ConversationList extends Component { // List of all the current user conversations
 	constructor(props) {
 		super(props)
 		this.state ={
-			pseudo: window.localStorage.pseudo
+			pseudo: window.localStorage.pseudo // Gets the current user pseudo
 		}
 		this.sortConversation = this.sortConversation.bind(this);
 	}
@@ -20,7 +20,6 @@ class ConversationList extends Component {
       sortedConv.unshift(newConv);
     } else {
       sortedConv.forEach((conv, i) => {
-        console.log(conv[0].time)
       });
     }
   }
@@ -32,7 +31,7 @@ class ConversationList extends Component {
 					this.props.matches.map((contact, i) =>
 					<ConversationButton 
 						changeConversation={() => this.props.changeConversation(i)}
-						sortConversation='hola' /*{this.sortConversation}*/
+						sortConversation='hola'
 						key={'conversation_' + i}
 						contact = {contact}
 						coucou='coucou'	

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { checkPassword } from './../../lib'
 import axios from 'axios'
 
-class PwdReset extends Component {
+class PwdReset extends Component { // Page for reseting your password
    constructor(props) {
        super(props);
        this.state= {

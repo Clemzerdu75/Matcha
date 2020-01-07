@@ -12,16 +12,16 @@ class LikesReceived extends Component {
 	constructor() {
 		 super()
 		 this.state = {
-			 pseudo: window.localStorage.pseudo, // Gets the pseudo of logged user
+			 pseudo: window.localStorage.pseudo, // Gets the pseudo of current user
 			 loading: false, // Handles loading
-			 user: [], // Will store the logged user infos
+			 user: [], // Will store the current user infos
 			 error: false,  // Handles errors
 			 blocked: [] // Handles the list of blocked users
 		 }
 		 this.Rerender = this.Rerender.bind(this)
 	 }
 	 
-	 componentDidMount() { // Gets the list of usr who like the logged user + the list of blocked user
+	 componentDidMount() { // Gets the list of usr who like the current user + the list of blocked user
 		 const request = `http://localhost:8080/relation/like/likeuser/${this.state.pseudo}`
 		 this.setState({loading: true})
 		 axios.get(request)

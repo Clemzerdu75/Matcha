@@ -369,7 +369,7 @@ class Infos extends Component {
 								<div className="infos_row" style={{width: "100%"}}>
 								
 								{/* - Third Row: Description / Orientation / Birthdate - */}
-								<div className="filter_col" style={{marginTop: this.state.isMobile ? "0" : "-400px"}}>
+								<div className="filter_col" style={{marginTop: this.state.isMobile ? "0" : "-400px",}}>
 									<h3>Description</h3>
 									<textarea
 										style={{resize: "none"}}

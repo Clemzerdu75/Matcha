@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
-class Navbar extends Component {
+class Navbar extends Component { // Contains all the link for the different page of the site
 	_isMounted = false;
 	constructor(props) {
 		super(props)

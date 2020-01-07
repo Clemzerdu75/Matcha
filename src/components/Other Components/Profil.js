@@ -4,7 +4,7 @@ import Card from './Card';
 import { CSSTransition } from 'react-transition-group'
 import socketContext from '../../socketContext'
 
-class Profil extends Component {
+class Profil extends Component { // Full profil display: Miniature + Card
 	constructor(props) {
 		super(props)
 		this.state = {

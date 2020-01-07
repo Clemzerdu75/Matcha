@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Transition } from 'react-transition-group'
 
-class Order extends Component {
+class Order extends Component { // Handles the order you want for the list of profil
 	constructor() {
 		super()
 		this.state= {
@@ -23,6 +23,7 @@ class Order extends Component {
 				<form className={`order_content order_content-${status}`}>
 					<h3 style={{ marginLeft: "0", fontSize: "1em", marginBottom: "-15px"}}>Order by</h3>
 						<br/>
+						{/* Auto */}
 						<input 
 							className="input_order"
 							type="radio"
@@ -32,6 +33,7 @@ class Order extends Component {
 							onChange= {this.handleChange}
 						/> <p style={{marginLeft: "15%", fontSize: this.props.isMobile ? ".6em" : ".8vw", marginTop: "16px", color: this.state.order === "auto" ? "black" : null}}>Auto</p>
 						<br/>
+						{/* Increasing age */}
 						<input
 							className="input_order"
 							type="radio"
@@ -41,6 +43,7 @@ class Order extends Component {
 							onChange= {this.handleChange}
 						/> <p style={{marginLeft: "15%", fontSize: this.props.isMobile ? ".6em" : ".8vw", marginTop: "16px", color: this.state.order === "i_age" ? "black" : null}}>Increasing Age</p>
 						<br/>
+						{/* Decreasing age */}
 						<input
 							className="input_order"
 							type="radio"
@@ -50,6 +53,7 @@ class Order extends Component {
 							onChange= {this.handleChange}
 						/> <p style={{marginLeft: "15%", fontSize: this.props.isMobile ? ".6em" : ".8vw", marginTop: "16px",color: this.state.order === "d_age" ? "black" : null}}>Decreasing Age</p>
 						<br/>
+						{/* Popularity */}
 						<input
 							className="input_order"
 						
@@ -60,6 +64,7 @@ class Order extends Component {
 							onChange= {this.handleChange}
 						/><p style={{marginLeft: "15%", fontSize: this.props.isMobile ? ".6em" : ".8vw", marginTop: "16px", color: this.state.order === "popularity" ? "black" : null}}> Popularity</p>
 						<br/>
+						{/* Localisation */}
 						<input
 							className="input_order"
 							type="radio"
@@ -69,6 +74,7 @@ class Order extends Component {
 							onChange= {this.handleChange}
 						/> <p style={{marginLeft: "15%", fontSize: this.props.isMobile ? ".6em" : ".8vw", marginTop: "16px", color: this.state.order === "localisation" ? "black" : null}}>Localisation</p>
 						<br/>
+						{/* tags */}
 						<input
 							className="input_order"
 							type="radio"

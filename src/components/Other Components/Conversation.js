@@ -3,24 +3,24 @@ import { Container } from 'reactstrap'
 import axios from "axios";
 import Message from './MessageArea'
 
-class Conversation extends Component {
+class Conversation extends Component { // Display the conversation between two users
 	constructor(props) {
 		super(props)
 		this.state ={
-			pseudo: window.localStorage.pseudo,
-			value:''
+			pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+			value:'' // value of new message
 		}
 		
 		this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    	this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 
-	handleChange(event) {
+	handleChange(event) { // Handles new data to state
     this.setState({value: event.target.value});
   }
 
-  handleSubmit(event) {
+  handleSubmit(event) { 
 		axios.put(`http://localhost:8080/relation/conversation/update`,{
 				message : this.state.value,
 				sender: window.localStorage.pseudo,

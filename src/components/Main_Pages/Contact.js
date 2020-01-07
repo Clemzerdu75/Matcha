@@ -13,14 +13,14 @@ class Contact extends Component {
 		 this.state = {
 			 pseudo: window.localStorage.pseudo, // Get the user pseudo form local storage
 			 loading: false, // Handle loading state
-			 user: [], // will get the list of user that  match the logged user
+			 user: [], // will get the list of user that  match the current user
 			 error: false, // handle error state
 			 blocked: [], // handle if some user are blocked to not show them
 		 }
 		 this.Rerender = this.Rerender.bind(this)
 	 }
 	 
-	 componentDidMount() { // Will get all the user who match the logged user and the list of user blocked and who block the logged user to sort the list
+	 componentDidMount() { // Will get all the user who match the current user and the list of user blocked and who block the current user to sort the list
 		 const request = `http://localhost:8080/relation/match/${this.state.pseudo}`
 		 this.setState({loading: true})
 		 axios.get(request)

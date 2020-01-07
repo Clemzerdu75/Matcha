@@ -3,9 +3,9 @@ import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
  
  
-class Map extends Component {
+class Map extends Component { // Map display (made by Google)
   static defaultProps = {
-    center: {
+    center: { // Default position: ( 96 Boulevard Bessieres Paris)
       lat: 48.856613,
       lng:2.352222
     },

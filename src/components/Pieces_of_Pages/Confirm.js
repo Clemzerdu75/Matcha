@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-class Confirm extends Component {
+class Confirm extends Component { // Validate new account from the mail the back send
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -12,10 +12,10 @@ class Suggestions extends Component {
    constructor() {
         super()
         this.state = {
-			pseudo: window.localStorage.pseudo, // Store the logged user pseudo
+			pseudo: window.localStorage.pseudo, // Store the current user pseudo
             loading: false, // Handles the loading state
 			user: [], // Will get all the user list
-			logged_user: {}, // Will get all the logged user infos
+			logged_user: {}, // Will get all the current user infos
 			order: "auto", // Handles the order of the user profils
 			showOrder: false, // Handles the order state
 			showFilter: false, // Handles the filter state
@@ -31,7 +31,7 @@ class Suggestions extends Component {
 		window.addEventListener("resize", this.update)
     }
     
-    componentDidMount() { // Gets all the logged user infos + the list of all user + the list of blocked user
+    componentDidMount() { // Gets all the current user infos + the list of all user + the list of blocked user
 		this._isMounted = true;
 		this.setState({loading: true})
 		axios.get(`http://localhost:8080/user/${this.state.pseudo}`)
@@ -94,7 +94,7 @@ class Suggestions extends Component {
 		})
 	}
 
-	Rerender() {  // handles rerender if the logged user blocks someone
+	Rerender() {  // handles rerender if the current user blocks someone
 		axios.get(`http://localhost:8080/relation/block/userblock/${this.state.pseudo}`)
 			.then(response => response.data)
             .then(data => {

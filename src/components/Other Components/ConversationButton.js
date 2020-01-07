@@ -5,14 +5,14 @@ class ConversationButton extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-      pseudo: window.localStorage.pseudo,
-      conversation: [],
-      empty: true,
-      lastmessage: this.props.lastmessage
+      pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+      conversation: [], // Gets the conversation between 2 user
+      empty: true, // Handles if there is no conversation
+      lastmessage: this.props.lastmessage // Stores last message
     }    
 	}
 
-  componentDidMount = () => {
+  componentDidMount = () => { // Gets the conversation between 2 users
     axios.get(`http://localhost:8080/relation/conversation/${this.state.pseudo}/${this.props.contact.pseudo}`)
     .then(response => response.data)
     .then((conversationData) => {

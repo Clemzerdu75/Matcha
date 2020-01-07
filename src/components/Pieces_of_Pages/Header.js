@@ -7,7 +7,7 @@ import LogOut from './../../img/logo/logout.png';
 import Menu from './../../img/logo/menu.png'
 
 
-class Header extends Component {
+class Header extends Component { // Header of the site (contains title - Notification - Log out)
 	_isMounted = false;
 	constructor(props) {
 		super(props)

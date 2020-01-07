@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Container, Row, Col} from "reactstrap"
 
-class TableTags extends Component {
+class TableTags extends Component { // Show all the tags for the current user to choose 
     constructor(props) {
         super(props)
         this.handleChange = this.handleChange.bind(this)

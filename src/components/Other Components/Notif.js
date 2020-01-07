@@ -3,21 +3,21 @@ import NotifList from './NotifList'
 import Dashboard from './Dashboard'
 import axios from 'axios'
 
-class NotifCard extends Component {
+class NotifCard extends Component { // Shows Notification
 	_isMounted = false;
 	constructor(props) {
 		super(props)
 		this.state = {
-		expand: false,
-		notifications: [],
-		newNotif:this.props.newNotif,
-		isMobile: window.innerWidth <= 640 ? true : false,
+		expand: false, // Handles the display 
+		notifications: [], // Will get all the notification 
+		newNotif:this.props.newNotif, // Will handle newNotif
+		isMobile: window.innerWidth <= 640 ? true : false, // For mobile
 		}
 		this.handleChange = this.handleChange.bind(this)
 		window.addEventListener("resize", this.update)
   }
   
-  componentDidMount() {
+  componentDidMount() { // Gets all the notification
 		this._isMounted = true;
 		axios.get(`http://localhost:8080/user/notification/${window.localStorage.pseudo}`)
     .then(response => response.data)
@@ -29,16 +29,16 @@ class NotifCard extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() { // Prevents some bugs 
 	this._isMounted = false;
 }
 
-  update = () => {
+  update = () => { // Switch Mobile/ Desktop version
 	if(this._isMounted)
 		this.setState({isMobile: window.innerWidth <= 640 ? true : false})
 }
 
-	handleChange() {
+	handleChange() { // handle expand
 		this.setState(prevState => {
 			return {
 				expand: !prevState.expand
@@ -64,6 +64,8 @@ class NotifCard extends Component {
 			<div>
 				{this.state.expand ?
 					<div className="notif" style={{width: "840px"}}>
+						
+						{ /* Full Notif panel */}
 						<h3 style={{marginLeft: "15px",  marginTop: "5px", fontSize: "1.8em"}}>Notifications</h3>
 						<NotifList use="Activity" notifications={Activity} newNotif = {this.state.newNotif} />
 						<NotifList use="Chat"  notifications={Message} newNotif = {this.state.newNotif}/>
@@ -76,6 +78,8 @@ class NotifCard extends Component {
 					</div>
 				:
 					<div className="notif">
+
+						{/* Little notif list */}
 						<h3 style={{marginLeft: "15px", marginTop: "5px", fontSize: "1.8em"}}>Notifications</h3>
 						<NotifList notifications = {this.state.notifications} newNotif = {this.state.newNotif}/>
 						{!this.state.isMobile ? 

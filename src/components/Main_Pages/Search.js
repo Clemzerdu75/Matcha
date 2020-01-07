@@ -14,8 +14,8 @@ class Search extends Component {
 	constructor() {
         super()
         this.state = {
-			pseudo: window.localStorage.pseudo, // Gets the logged user pseudo
-			logged_user: {}, // Will get all logged user infos
+			pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+			logged_user: {}, // Will get all current user infos
 			loading: false, // Handles loading
 			search: "", // Handles the search field
 			user: [], // Will get the user list
@@ -33,7 +33,7 @@ class Search extends Component {
 		window.addEventListener("resize", this.update)
     }
 
-    componentDidMount() { // Gets all the logged user infos + the list of all user + the list of blocked user
+    componentDidMount() { // Gets all the current user infos + the list of all user + the list of blocked user
 		this._isMounted = true;
 		this.setState({loading: true})
 		axios.get(`http://localhost:8080/user/${this.state.pseudo}`)

@@ -4,18 +4,17 @@ import socketContext from '../../socketContext'
 import axios from 'axios';
 
 
-class MessageList extends Component {
+class MessageList extends Component { // List of the different conversations of the current user
 	constructor(props) {
 		super(props)
 		this.state ={
-      pseudo: window.localStorage.pseudo,
-      sortedConversation: [],
-      lastMessages: []
+      pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+      sortedConversation: [], // Gets all the conversation
+      lastMessages: [] // Gets the last message
     }
-    //this.sortConversation = this.sortConversation.bind(this);
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => { // Gets all the conversation and sorts them
     this.props.socket.on('receivemesEvent', (message, from) => {
       let newSortedConv = [];
       this.state.sortedConversation.forEach((conversation) => {

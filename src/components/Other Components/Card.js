@@ -9,17 +9,17 @@ import Tag from './Tag'
 import axios from 'axios'
 import socketContext from '../../socketContext'
 
-class Card extends Component {
+class Card extends Component { // Profil card, shows user info for other user
 	_isMounted = false;
 	constructor(props) {
 		super(props)
 		this.state ={
-			pseudo: window.localStorage.pseudo,
-			liked_by_user: false,
-			user_liked: false,
-			match_anim: false,
-			lastConnect: this.props.lastConnect,
-			blocked: [],
+			pseudo: window.localStorage.pseudo, // Gets the current user pseudo
+			liked_by_user: false, // Handles if the current user like this profil
+			user_liked: false, // Handles if the user who the profil is displayed likes the current user
+			match_anim: false, // Handles the display of match animation
+			lastConnect: this.props.lastConnect, // Handle the last Connection of the user
+			blocked: [], // List of blocked user
 		}
 
 		this.handleLike = this.handleLike.bind(this)
@@ -28,7 +28,7 @@ class Card extends Component {
     this.reportUser = this.reportUser.bind(this)
 	}
   
-  componentDidMount = () => {
+  componentDidMount = () => { // Handles the view, the notification and the status between the two user
 		this._isMounted = true;
 		var userlike = []
 		axios.post('http://localhost:8080/relation/view/new', {
@@ -84,7 +84,7 @@ class Card extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() { // Prevents  some bugs
 	this.props.socket.off('isLogged');
 	this.setState({
 		checkIsLogged: true
@@ -93,7 +93,7 @@ class Card extends Component {
 }
 
 
-	UpdateState() {
+	UpdateState() { 
 		return new Promise((resolve, reject) => {
 			this.setState(prevState => {
 				return { liked_by_user: !prevState.liked_by_user }
@@ -103,7 +103,7 @@ class Card extends Component {
 	}
 
 
-	handleLike() {
+	handleLike() { // Handle the like system (for Like, unlike and match)
 		if(this._isMounted) {
 			const request_body = { pseudo1: this.state.pseudo, pseudo2: this.props.pseudo }
 			this.UpdateState()
@@ -150,13 +150,13 @@ class Card extends Component {
 		}
 	}
 
-	expandBlock() {
+	expandBlock() { // For display the report / block block
 		if(this._isMounted) {
 			this.setState(prevState => {return { expandBlock: !prevState.expandBlock }})
 		}
 	}
 
-	blockUser() {
+	blockUser() { // For blocking user
 		let pseudos = {pseudo1: this.state.pseudo, pseudo2: this.props.pseudo}
 		axios.post(`http://localhost:8080/relation/block/new`, pseudos)
 			.then((result) => { 
@@ -166,7 +166,7 @@ class Card extends Component {
 			.catch(error => { console.log(error) })
 	}
 
-	reportUser() {
+	reportUser() { // For reporting user
 		let pseudos = {pseudo1: this.state.pseudo, pseudo2: this.props.pseudo}
 		axios.put(`http://localhost:8080/user/report`, pseudos)
 		.then((result) => { 
@@ -176,7 +176,7 @@ class Card extends Component {
 		.catch(error => { console.log("b") })
 	}
 
-	generateBlock() {
+	generateBlock() { // Create the block / report block
 		return (
 			<div className="BlockCard" >
 				<h3 style={{color: "#c4001d"}} onClick={this.blockUser}> Block</h3>
@@ -191,6 +191,8 @@ class Card extends Component {
 		var heart = EmptyHeart
 		var text = null;
 		let Block = this.state.expandBlock ? this.generateBlock() : null
+
+		// Good display of the heart logo depending of the relation between the two user
 		if (this.state.user_liked && this.state.liked_by_user)
 			heart = FullHeart
 		if(this.state.liked_by_user && !this.state.user_liked)
@@ -199,10 +201,14 @@ class Card extends Component {
 			heart = LikedHeart
 		const gender = this.props.gender === "female" ? "F" : "M"
 		const UserTag = this.props.tags ? this.props.tags.map((item, i) => <Tag key={i} item={item}/>) : null
+
+		// Managed display of orientation
 		var ori = ""
 		ori = this.props.ori === "bisexual" ? "Bi" : ori
 		ori = this.props.ori === "heterosexual" ? "Straight" : ori
 		ori = this.props.ori === "homosexual" ? "Gay" : ori
+
+		// Good color for good for orientation
 		var color = ""
 		if (ori === "Straight" && gender === "F")
 			color = "#7BBCDE"
@@ -214,9 +220,15 @@ class Card extends Component {
 			color = "#F58C8C"
 		return(		
 			<div className="card">
+
+				{/* Report + block Blocks */}
 				{Block}
+
+				{/* Match animation */}
 				<div className="Match_gif" style={{ display: this.state.match_anim ? "block" : "none" }}>
 				</div>
+
+				{/* Main Infos */}
 				<div className="top_row">
 					<h2>{this.props.name}</h2>
 					{text}
@@ -231,11 +243,15 @@ class Card extends Component {
 					<span className="status_dot" style={{backgroundColor: this.props.logged === true ? "#45bf37" : null, border: this.props.logged === true ? "none" : null}}></span>
 					<p style={{margin: "0 auto", marginLeft: "0.7%"}}>{this.props.logged === true ? 'Logged' : this.state.lastConnect}</p>
 				</div>
+
+				{/* Pictures Gallery */}
 				<div className="picture">
 					{this.props.img ? this.props.img.map((g, i) => {
 						return <img key={i} className="Card_pic"  alt="" src={g}></img>
 					}) : this.props.img}
 				</div>
+
+				{/*  Bottom infos */}
 				<div className="gend_or">
 					<h2 className="gender" style={gender === "F" ? {color: "#F58C8C"} : {color: "#7BBCDE"}}>{gender}</h2>
 					{ori === "Bi" ? 
@@ -249,7 +265,6 @@ class Card extends Component {
 					<div className="tag"> {UserTag} </div>
 					<h2 className="score">{this.props.popularity}</h2>
 				</div>
-			
 			</div>
 		)
 	}

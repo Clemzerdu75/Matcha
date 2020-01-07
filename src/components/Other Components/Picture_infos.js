@@ -5,14 +5,14 @@ import upload from './../../img/logo/upload.png'
 import cross from './../../img/logo/red_cross.png'
 
 
-class PictureInfos extends Component {
+class PictureInfos extends Component { // Shows pictures gallery + can modify order, post new one or delete one
     constructor(props) {
         super(props)
         this.handleDelete = this.handleDelete.bind(this)
         this.handlePP = this.handlePP.bind(this)
     }
 
-getFiles(file) {
+getFiles(file) { // Post new Picture
 	let type = file.type.split("/")
     let Newgallery = this.props.gallery
 	let userPic = {
@@ -59,6 +59,7 @@ handlePP(e) {
         const gallery = this.props.gallery ? this.props.gallery.map((g, i) => {
              if(g.length)
                 return (
+                    // List of img
                     <div className="image_container" key={i} >
                         <label>
                             <input style={{display: "none"}} type="button" value={g} onClick={(e) => that.handlePP(e)} />
@@ -77,13 +78,19 @@ handlePP(e) {
     }, this ) : null
         return (
             <div className="filter_col" style={{height: "auto", textAlign: "center", backgroundColor: "white", borderRadius: "10px", boxShadow: "0px 3px 8px rgb(0,0,0, .1)", paddingTop: "20px", paddingBottom: "10px" }} >
-			<img src={this.props.ProfilPicture} alt="" style={{height: "250px", marginBottom: "20px", borderRadius: "5px"}}></img>
+			
+            {/* Profil Picture */}
+            <img src={this.props.ProfilPicture} alt="" style={{height: "250px", marginBottom: "20px", borderRadius: "5px"}}></img>
 			<br/>
+
+            {/* Other img list */}
 			<div className="picture" style={{ height: "110px", width: "80%", margin: "0 auto", backgroundColor: "white", borderRadius: "5px", marginBottom: "10px"}}>
                 <div className="Gallery_row">  
                 {gallery}
                 </div>  
 			</div>
+
+            {/* Upload new img */}
             <div className="upload-btn-wrapper">
                 <button className="btn"><img style={{height: "60px"}} src={upload} alt=""></img></button>
                 <FileBase64
