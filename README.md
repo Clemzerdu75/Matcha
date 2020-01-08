@@ -40,3 +40,13 @@ And you're good to go ;)
 __Nb:__ Some features (like localisation) will not work unless you provide an google api key.
 
 ## Gallery
+
+![Main demo](./src/img/forReadme/matchaMain.gif)
+
+![Search demo](./src/img/forReadme/matchaSearch.gif)
+
+![Register demo](./src/img/forReadme/matchaRegister.gif)
+
+![Notif demo](./src/img/forReadme/matchaNotif.gif)
+
+![Chat demo](./src/img/forReadme/matchaChat.gif)
