@@ -13,10 +13,21 @@ I did the front (UI/UX) of the project and Benjamin the back (using Neo4j)
 
 ## What is Matcha ?
 
-## How to use it ?
-First launch Neo4j: `neo4j start` (_if you haven't installed it run:_ `don't know yet` _before_)
+2nd project of the Web Branch of 42. Create a dating WebSite where the user can create his profile, search other users, like them and begin a conversation with a chat if the person liked him back. This website require node and neo4j.
 
-_If you haven't install npm run:_ `don't know yet`
+### Features
+- Inscription and connexion
+- User profile
+- User experience
+- Research and filter users
+- Real time chat
+- Real time notification system
+
+
+## How to use it ?
+First launch Neo4j: `neo4j start` (_if you haven't installed neo4j run:_ `brew install neo4j`)
+
+_If you haven't install npm run:_ `brew install node`
 
 Finally in the main directory and the api folder run:
  ```
