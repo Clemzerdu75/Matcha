@@ -41,14 +41,27 @@ __Nb:__ Some features (like localisation) will not work unless you provide an go
 
 ## Gallery
 
+__Main Page__
+
 ![Main demo](./src/img/forReadme/matchaMain.gif)
+
+
+__Search Page__
 
 ![Search demo](./src/img/forReadme/matchaSearch.gif)
 
+__Register Launch__
+
 ![Register demo](./src/img/forReadme/matchaRegister.gif)
+
+__Bad input behvior__
 
 ![Error demo](./src/img/forReadme/matchaError.gif)
 
+__Realtime Notification__
+
 ![Notif demo](./src/img/forReadme/matchaNotif.gif)
+
+__Chat__
 
 ![Chat demo](./src/img/forReadme/matchaChat.gif)
