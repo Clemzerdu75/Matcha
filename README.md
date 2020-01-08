@@ -47,6 +47,8 @@ __Nb:__ Some features (like localisation) will not work unless you provide an go
 
 ![Register demo](./src/img/forReadme/matchaRegister.gif)
 
+![Error demo](./src/img/forReadme/matchaError.gif)
+
 ![Notif demo](./src/img/forReadme/matchaNotif.gif)
 
 ![Chat demo](./src/img/forReadme/matchaChat.gif)
